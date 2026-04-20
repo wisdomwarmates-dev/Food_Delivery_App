@@ -59,15 +59,14 @@ export const ShopContextProvider = ({ children }) => {
 	};
 
 	const decreaseQuantity = (id) => {
-		setCart(
-			(prevCart) =>
-				prevCart
-					.map((item) =>
-						item.id === id
-							? { ...item, amount: item.amount - 1 }
-							: item,
-					)
-					.filter((item) => item.amount > 0), // remove if 0
+		setCart((prevCart) =>
+			prevCart
+				.map((item) =>
+					item.id === id
+						? { ...item, amount: item.amount - 1 }
+						: item,
+				)
+				.filter((item) => item.amount > 0),
 		);
 	};
 
