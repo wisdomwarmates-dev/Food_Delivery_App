@@ -1,29 +1,61 @@
-import React, { useContext } from 'react';
-import { useParams } from 'react-router-dom';
-import { ShopContext } from '../../components/ShopContext';
-import { productsData } from '../../data'
+import React from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
+// icons
+import { IoMdArrowRoundBack } from "react-icons/io";
+
+// constants
+import { productsData } from "../../utils/constants";
+
+// context
+import { useShopContext } from "../../StateProvider/useShopContext";
 
 const ProductDetails = () => {
-  const {addToCart} = useContext(ShopContext)
+	const { id } = useParams();
+	const navigate = useNavigate();
 
-  const {id} = useParams()
+	const { addToCart } = useShopContext();
 
-  const product = productsData.find((product) => product.id === parseInt(id))
+	const product = productsData.find((product) => product.id === parseInt(id));
+	const goBack = () => {
+		navigate(-1);
+	};
 
-  return (
-    <div className='mt-20 max-w-6xl mx-auto px-6 py-16 flex flex-col md:flex-row gap-10'>
-      <div className='md:w-1/2 flex justify-center' >
-        <img src={product.image} alt="" className='w-[460px] rounded-lg shadow-md'/>
-      </div>
-    <div classname='md:w-1/2 space-y-6'>
-      <h3 className='text-3xl font-semibold'>{product.name}</h3>
-      <p className='text-2xl text-amber-500 font-bold'>${product.price}</p>
-      <p className='text-lg text-gray-600'>{product.description}</p>
-      <button onClick={() => addToCart(product, id)} className='bg-amber-600 text-white text-lg py-2 mt-2 px-10 rounded-lg'>ADD TO CART</button>
-    </div>
-    </div>
-  )
-}
+	return (
+		<div className="h-screen w-full px-6 py-12 flex flex-col md:flex-row justify-center items-center gap-10">
+			<div
+				onClick={goBack}
+				className="fixed top-7 left-5 z-100 cursor-pointer">
+				<IoMdArrowRoundBack className="text-xl" />
+			</div>
 
-export default ProductDetails
+			<div className="w-1/2 h-60 sm:h-100">
+				<img
+					src={product.image}
+					alt={product.name}
+					className="w-full h-full object-cover rounded-lg shadow-md"
+				/>
+			</div>
+
+			<div classname="w-1/2">
+				<h3 className="text-3xl sm:text-4xl capitalize font-semibold">
+					{product.name}
+				</h3>
+
+				<p className="text.xl sm:text-2xl text-amber-500 font-bold">
+					${product.price}
+				</p>
+				<p className="max-w-lg text-md sm:text-lg text-gray-600">
+					{product.description}
+				</p>
+				<button
+					onClick={() => addToCart(product, id)}
+					className="w-full bg-amber-600 text-white text-md sm:text-lg py-2 mt-6 rounded-lg">
+					ADD TO CART
+				</button>
+			</div>
+		</div>
+	);
+};
+
+export default ProductDetails;
